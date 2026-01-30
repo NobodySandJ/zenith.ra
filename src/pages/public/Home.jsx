@@ -204,6 +204,136 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Exclusive Showcase Preview Section */}
+      <section className="py-20 lg:py-32 bg-gradient-to-b from-primary/5 via-dark-900 to-dark-900 relative overflow-hidden">
+        {/* Decorative Background */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iIzM5ZmYxNCIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-30"></div>
+        <div className="absolute top-20 right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">
+          {/* Section Header */}
+          <div className="text-center mb-16" data-aos="fade-up">
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-2 mb-6">
+              <HiOutlineSparkles className="text-primary text-xl animate-pulse" />
+              <span className="text-primary font-medium uppercase tracking-wider text-sm">
+                {lang === 'id' ? 'Showcase Eksklusif' : 'Exclusive Showcase'}
+              </span>
+            </div>
+            
+            <h2 className="text-3xl md:text-5xl font-display font-black text-white mb-4">
+              {lang === 'id' ? (
+                <>
+                  Koleksi <span className="text-primary">Premium</span> Kami
+                </>
+              ) : (
+                <>
+                  Our <span className="text-primary">Premium</span> Collection
+                </>
+              )}
+            </h2>
+            
+            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+              {lang === 'id'
+                ? 'Produk eksklusif limited edition yang dirancang khusus untuk showcase. Hanya untuk display dan promosi.'
+                : 'Exclusive limited edition products specially designed for showcase. Display and promotional purposes only.'}
+            </p>
+          </div>
+
+          {/* Showcase Cards Grid */}
+          {productsLoading ? (
+            <ProductGridSkeleton count={3} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {dummyProducts.filter(p => p.is_featured).slice(0, 3).map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -8 }}
+                  className="group relative"
+                >
+                  <Link to={`/products/${product.slug}`}>
+                    {/* Card Container */}
+                    <div className="relative bg-dark-800/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500">
+                      {/* Exclusive Badge */}
+                      <div className="absolute top-4 left-4 z-10">
+                        <div className="bg-primary/90 backdrop-blur-sm text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full">
+                          {lang === 'id' ? 'Eksklusif' : 'Exclusive'}
+                        </div>
+                      </div>
+
+                      {/* Image */}
+                      <div className="relative aspect-[4/5] overflow-hidden bg-dark-900">
+                        <img
+                          src={product.images[0]?.image_url}
+                          alt={lang === 'id' ? product.name_id : product.name_en}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/50 to-transparent opacity-60"></div>
+                        
+                        {/* View Icon */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-16 h-16 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center">
+                            <svg className="w-8 h-8 text-dark-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                          {lang === 'id' ? product.name_id : product.name_en}
+                        </h3>
+                        
+                        <p className="text-white/60 text-sm mb-4 line-clamp-2">
+                          {lang === 'id' ? product.short_description_id : product.short_description_en}
+                        </p>
+
+                        {/* Display Only Badge */}
+                        <div className="flex items-center gap-2 text-primary/80 text-sm">
+                          <HiOutlineSparkles className="text-lg" />
+                          <span className="font-medium">
+                            {lang === 'id' ? 'Display Eksklusif' : 'Exclusive Display'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Glow Effect */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                        <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent"></div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {/* View All Button */}
+          <div className="text-center" data-aos="fade-up">
+            <Link 
+              to="/showcase"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-dark-900 font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(57,255,20,0.4)]"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              {lang === 'id' ? 'Lihat Semua Showcase' : 'View All Showcase'}
+              <HiOutlineArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Products Section */}
       <section className="py-20 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
@@ -241,52 +371,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
-
-      {/* Exclusive Showcase Banner */}
-      <section className="py-16 lg:py-24 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iIzM5ZmYxNCIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-30"></div>
-        
-        <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-2 mb-6">
-              <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-              </svg>
-              <span className="text-primary font-medium text-sm uppercase tracking-wider">
-                {lang === 'id' ? 'Koleksi Eksklusif' : 'Exclusive Collection'}
-              </span>
-            </div>
-
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-              {lang === 'id' ? (
-                <>Lihat <span className="text-primary">Showcase</span> Eksklusif Kami</>
-              ) : (
-                <>Explore Our <span className="text-primary">Exclusive</span> Showcase</>
-              )}
-            </h2>
-
-            <p className="text-lg text-white/60 mb-8 max-w-2xl mx-auto">
-              {lang === 'id'
-                ? 'Temukan koleksi premium limited edition yang dirancang khusus untuk showcase. Produk eksklusif yang tidak dijual regular, hanya untuk display dan promosi.'
-                : 'Discover our premium limited edition collection designed exclusively for showcase. Exclusive products not sold regularly, only for display and promotional purposes.'}
-            </p>
-
-            <Link 
-              to="/showcase"
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-dark-900 font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(57,255,20,0.4)]"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              {lang === 'id' ? 'Lihat Showcase' : 'View Showcase'}
-            </Link>
-          </div>
-        </div>
-
-        {/* Decorative Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
       </section>
 
       {/* Why Choose Us Section */}
