@@ -52,7 +52,7 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <CartProvider>
-          <Router>
+          <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             {/* Toast Notifications */}
             <Toaster
               position="top-right"
