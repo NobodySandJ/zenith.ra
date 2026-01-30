@@ -8,10 +8,13 @@ import {
   HiOutlineShare,
   HiOutlineMinus,
   HiOutlinePlus,
-  HiOutlineChevronLeft
+  HiOutlineChevronLeft,
+  HiOutlineCheck
 } from 'react-icons/hi'
 import { useCart } from '@context/CartContext'
 import ProductCard from '@components/products/ProductCard'
+import { ProductDetailSkeleton, ProductGridSkeleton } from '@components/common/Skeleton'
+import toast from 'react-hot-toast'
 
 // Dummy product data
 const dummyProduct = {
@@ -95,7 +98,16 @@ export default function ProductDetail() {
   const [selectedSize, setSelectedSize] = useState(null)
   const [selectedColor, setSelectedColor] = useState(null)
   const [quantity, setQuantity] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [addingToCart, setAddingToCart] = useState(false)
   const lang = i18n.language
+
+  // Simulate loading
+  useEffect(() => {
+    setLoading(true)
+    const timer = setTimeout(() => setLoading(false), 800)
+    return () => clearTimeout(timer)
+  }, [slug])
 
   const name = lang === 'id' ? product.name_id : product.name_en
   const description = lang === 'id' ? product.description_id : product.description_en
@@ -109,11 +121,24 @@ export default function ProductDetail() {
     }).format(price)
   }
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    if (!selectedSize) {
+      toast.error(t('products.selectSize') || 'Please select a size')
+      return
+    }
+    
+    setAddingToCart(true)
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
     const colorName = selectedColor 
       ? (lang === 'id' ? product.colors.find(c => c.color_code === selectedColor)?.color_name_id : product.colors.find(c => c.color_code === selectedColor)?.color_name_en)
       : null
     addItem(product, quantity, selectedSize, colorName)
+    
+    setAddingToCart(false)
+    toast.success(t('cart.addedToCart') || 'Added to cart!')
   }
 
   const discount = product.compare_price 
@@ -134,6 +159,9 @@ export default function ProductDetail() {
           </Link>
         </nav>
 
+        {loading ? (
+          <ProductDetailSkeleton />
+        ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Images Section */}
           <div data-aos="fade-right">
@@ -302,10 +330,20 @@ export default function ProductDetail() {
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <button
                 onClick={handleAddToCart}
-                className="btn-neon flex-1 flex items-center justify-center gap-2"
+                disabled={addingToCart}
+                className="btn-neon flex-1 flex items-center justify-center gap-2 disabled:opacity-70"
               >
-                <HiOutlineShoppingBag className="w-5 h-5" />
-                {t('products.addToCart')}
+                {addingToCart ? (
+                  <>
+                    <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                    Adding...
+                  </>
+                ) : (
+                  <>
+                    <HiOutlineShoppingBag className="w-5 h-5" />
+                    {t('products.addToCart')}
+                  </>
+                )}
               </button>
               <button className="p-4 border-2 border-dark-600 rounded-lg text-gray-400 hover:text-red-500 hover:border-red-500 transition-all">
                 <HiOutlineHeart className="w-6 h-6" />
@@ -339,17 +377,22 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
+        )}
 
         {/* Related Products */}
         <section className="mt-20">
           <h2 className="text-2xl font-bold text-white mb-8" data-aos="fade-up">
             {t('products.relatedProducts')}
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relatedProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </div>
+          {loading ? (
+            <ProductGridSkeleton count={3} />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </div>

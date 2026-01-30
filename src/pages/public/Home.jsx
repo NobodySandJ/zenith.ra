@@ -13,6 +13,7 @@ import {
 import { useTheme } from '@context/ThemeContext'
 import ProductCard from '@components/products/ProductCard'
 import LoadingScreen from '@components/common/LoadingScreen'
+import { ProductGridSkeleton, TestimonialSkeleton } from '@components/common/Skeleton'
 
 // Lazy load Three.js component
 const HeroScene = lazy(() => import('@components/three/HeroScene'))
@@ -104,7 +105,19 @@ export default function Home() {
   const { t, i18n } = useTranslation()
   const { settings } = useTheme()
   const [email, setEmail] = useState('')
+  const [productsLoading, setProductsLoading] = useState(true)
+  const [testimonialsLoading, setTestimonialsLoading] = useState(true)
   const lang = i18n.language
+
+  // Simulate loading for products
+  useEffect(() => {
+    const timer1 = setTimeout(() => setProductsLoading(false), 1000)
+    const timer2 = setTimeout(() => setTestimonialsLoading(false), 1200)
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+    }
+  }, [])
 
   const features = [
     {
@@ -207,11 +220,15 @@ export default function Home() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {dummyProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </div>
+          {productsLoading ? (
+            <ProductGridSkeleton count={4} />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              {dummyProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+          )}
 
           {/* View All Button */}
           <div className="text-center mt-12" data-aos="fade-up">
@@ -273,52 +290,60 @@ export default function Home() {
           </div>
 
           {/* Testimonials Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {dummyTestimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card-dark p-6"
-              >
-                {/* Stars */}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <HiOutlineStar
-                      key={i}
-                      className={`w-5 h-5 ${
-                        i < testimonial.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-
-                {/* Content */}
-                <p className="text-gray-300 mb-6 italic">
-                  "{lang === 'id' ? testimonial.content_id : testimonial.content_en}"
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center">
-                    <span className="text-primary-500 font-bold">
-                      {testimonial.customer_name.charAt(0)}
-                    </span>
+          {testimonialsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <TestimonialSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {dummyTestimonials.map((testimonial, index) => (
+                <motion.div
+                  key={testimonial.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="card-dark p-6"
+                >
+                  {/* Stars */}
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <HiOutlineStar
+                        key={i}
+                        className={`w-5 h-5 ${
+                          i < testimonial.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-600'
+                        }`}
+                      />
+                    ))}
                   </div>
-                  <div>
-                    <p className="font-semibold text-white">
-                      {testimonial.customer_name}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {testimonial.customer_location}
-                    </p>
+
+                  {/* Content */}
+                  <p className="text-gray-300 mb-6 italic">
+                    "{lang === 'id' ? testimonial.content_id : testimonial.content_en}"
+                  </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center">
+                      <span className="text-primary-500 font-bold">
+                        {testimonial.customer_name.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white">
+                        {testimonial.customer_name}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {testimonial.customer_location}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

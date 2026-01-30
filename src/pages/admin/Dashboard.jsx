@@ -22,6 +22,7 @@ import {
   HiOutlineTrendingUp,
   HiOutlineCalendar
 } from 'react-icons/hi'
+import { DashboardStatsSkeleton, ChartSkeleton, TableSkeleton } from '@components/common/Skeleton'
 
 // Register ChartJS
 ChartJS.register(
@@ -40,6 +41,7 @@ ChartJS.register(
 export default function AdminDashboard() {
   const { t } = useTranslation()
   const [period, setPeriod] = useState('week')
+  const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalRevenue: 0,
     totalOrders: 0,
@@ -51,7 +53,12 @@ export default function AdminDashboard() {
 
   // Dummy data generator based on period
   useEffect(() => {
-    generateDummyData()
+    setLoading(true)
+    const timer = setTimeout(() => {
+      generateDummyData()
+      setLoading(false)
+    }, 600)
+    return () => clearTimeout(timer)
   }, [period])
 
   const generateDummyData = () => {
@@ -266,38 +273,48 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          icon={HiOutlineCurrencyDollar}
-          label={t('admin.dashboard.totalRevenue')}
-          value={`$${stats.totalRevenue.toLocaleString()}`}
-          trend="up"
-          trendValue={stats.growthRate}
-        />
-        <StatCard
-          icon={HiOutlineShoppingCart}
-          label={t('admin.dashboard.totalOrders')}
-          value={stats.totalOrders.toLocaleString()}
-          trend="up"
-          trendValue={8.2}
-        />
-        <StatCard
-          icon={HiOutlineEye}
-          label={t('admin.dashboard.totalViews')}
-          value={stats.totalViews.toLocaleString()}
-          trend="up"
-          trendValue={15.3}
-        />
-        <StatCard
-          icon={HiOutlineCalendar}
-          label={t('admin.dashboard.avgOrderValue')}
-          value={`$${(stats.totalRevenue / stats.totalOrders || 0).toFixed(2)}`}
-          trend="up"
-          trendValue={3.2}
-        />
-      </div>
+      {loading ? (
+        <DashboardStatsSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard
+            icon={HiOutlineCurrencyDollar}
+            label={t('admin.dashboard.totalRevenue')}
+            value={`$${stats.totalRevenue.toLocaleString()}`}
+            trend="up"
+            trendValue={stats.growthRate}
+          />
+          <StatCard
+            icon={HiOutlineShoppingCart}
+            label={t('admin.dashboard.totalOrders')}
+            value={stats.totalOrders.toLocaleString()}
+            trend="up"
+            trendValue={8.2}
+          />
+          <StatCard
+            icon={HiOutlineEye}
+            label={t('admin.dashboard.totalViews')}
+            value={stats.totalViews.toLocaleString()}
+            trend="up"
+            trendValue={15.3}
+          />
+          <StatCard
+            icon={HiOutlineCalendar}
+            label={t('admin.dashboard.avgOrderValue')}
+            value={`$${(stats.totalRevenue / stats.totalOrders || 0).toFixed(2)}`}
+            trend="up"
+            trendValue={3.2}
+          />
+        </div>
+      )}
 
       {/* Charts Row */}
+      {loading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartSkeleton />
+          <ChartSkeleton />
+        </div>
+      ) : (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sales Chart */}
         <motion.div
@@ -329,8 +346,17 @@ export default function AdminDashboard() {
           </div>
         </motion.div>
       </div>
+      )}
 
       {/* Bottom Row */}
+      {loading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <TableSkeleton rows={5} cols={3} />
+          </div>
+          <ChartSkeleton />
+        </div>
+      ) : (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Top Products */}
         <motion.div
@@ -393,6 +419,7 @@ export default function AdminDashboard() {
           </div>
         </motion.div>
       </div>
+      )}
 
       {/* Recent Activity */}
       <motion.div

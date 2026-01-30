@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
-import { HiOutlineSearch, HiOutlineAdjustments } from 'react-icons/hi'
+import { HiOutlineSearch, HiOutlineAdjustments, HiOutlineViewGrid, HiOutlineViewList } from 'react-icons/hi'
 import ProductCard from '@components/products/ProductCard'
+import { ProductGridSkeleton, CategorySidebarSkeleton } from '@components/common/Skeleton'
 
 // Dummy data
 const dummyProducts = [
@@ -127,13 +128,24 @@ const dummyCategories = [
 
 export default function Products() {
   const { t, i18n } = useTranslation()
-  const [products, setProducts] = useState(dummyProducts)
+  const [products, setProducts] = useState([])
   const [categories] = useState(dummyCategories)
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('newest')
   const [showFilters, setShowFilters] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [viewMode, setViewMode] = useState('grid') // grid or list
   const lang = i18n.language
+
+  // Simulate loading
+  useEffect(() => {
+    setLoading(true)
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 800)
+    return () => clearTimeout(timer)
+  }, [activeCategory, searchQuery, sortBy])
 
   // Filter and sort products
   useEffect(() => {
@@ -167,6 +179,8 @@ export default function Products() {
       case 'popular':
         filtered.sort((a, b) => (b.is_bestseller ? 1 : 0) - (a.is_bestseller ? 1 : 0))
         break
+      default:
+        break
     }
 
     setProducts(filtered)
@@ -195,7 +209,7 @@ export default function Products() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t('common.search')}
-              className="input-dark pl-12 w-full"
+              className="w-full h-12 pl-12 pr-4 bg-dark-900 border border-dark-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-primary-500 transition-all"
             />
           </div>
 
@@ -203,7 +217,7 @@ export default function Products() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="input-dark w-full lg:w-48"
+            className="h-12 px-4 bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-primary-500 transition-all w-full lg:w-48 cursor-pointer"
           >
             <option value="newest">{t('products.newest')}</option>
             <option value="popular">{t('products.popular')}</option>
@@ -211,10 +225,26 @@ export default function Products() {
             <option value="price_desc">{t('products.priceHighest')}</option>
           </select>
 
+          {/* View Mode Toggle - Desktop */}
+          <div className="hidden lg:flex items-center border border-dark-700 rounded-lg overflow-hidden">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-3 transition-all ${viewMode === 'grid' ? 'bg-primary-500/20 text-primary-500' : 'text-gray-400 hover:text-white'}`}
+            >
+              <HiOutlineViewGrid className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-3 transition-all ${viewMode === 'list' ? 'bg-primary-500/20 text-primary-500' : 'text-gray-400 hover:text-white'}`}
+            >
+              <HiOutlineViewList className="w-5 h-5" />
+            </button>
+          </div>
+
           {/* Mobile Filter Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden flex items-center justify-center gap-2 px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg text-white"
+            className="lg:hidden flex items-center justify-center gap-2 h-12 px-4 bg-dark-800 border border-dark-700 rounded-lg text-white"
           >
             <HiOutlineAdjustments className="w-5 h-5" />
             {t('common.filter')}
@@ -251,16 +281,37 @@ export default function Products() {
 
           {/* Products Grid */}
           <div className="flex-1">
-            {products.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="text-gray-500 text-lg">{t('products.noProducts')}</p>
-              </div>
+            {loading ? (
+              <ProductGridSkeleton count={6} />
+            ) : products.length === 0 ? (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center py-20"
+              >
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-dark-800 flex items-center justify-center">
+                  <HiOutlineSearch className="w-10 h-10 text-gray-600" />
+                </div>
+                <p className="text-gray-400 text-lg mb-2">{t('products.noProducts')}</p>
+                <p className="text-gray-600 text-sm">Try adjusting your search or filter</p>
+              </motion.div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product, index) => (
-                  <ProductCard key={product.id} product={product} index={index} />
-                ))}
-              </div>
+              <>
+                {/* Results count */}
+                <p className="text-gray-500 text-sm mb-4">
+                  {products.length} {products.length === 1 ? 'product' : 'products'} found
+                </p>
+                
+                <div className={`grid gap-6 ${
+                  viewMode === 'grid' 
+                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
+                    : 'grid-cols-1'
+                }`}>
+                  {products.map((product, index) => (
+                    <ProductCard key={product.id} product={product} index={index} />
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>
