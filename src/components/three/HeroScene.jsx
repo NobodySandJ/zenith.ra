@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
@@ -107,12 +107,53 @@ function TorusKnot() {
 }
 
 export default function HeroScene() {
+  const [webglError, setWebglError] = useState(false)
+
+  // Check WebGL support
+  useEffect(() => {
+    const canvas = document.createElement('canvas')
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+    if (!gl) {
+      setWebglError(true)
+      console.warn('WebGL not supported, falling back to static background')
+    }
+  }, [])
+
+  // Fallback untuk browser tanpa WebGL support
+  if (webglError) {
+    return (
+      <div className="absolute inset-0 z-0">
+        {/* Static animated background sebagai fallback */}
+        <div className="absolute inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
+          {/* Animated gradient orbs */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Grid pattern */}
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iIzM5ZmYxNCIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="absolute inset-0 z-0">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          powerPreference: 'high-performance',
+          failIfMajorPerformanceCaveat: false
+        }}
         style={{ background: 'transparent' }}
+        onCreated={({ gl }) => {
+          gl.setClearColor('#0a0a0a', 0)
+        }}
+        onError={(error) => {
+          console.error('Canvas error:', error)
+          setWebglError(true)
+        }}
       >
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} color="#39ff14" />
