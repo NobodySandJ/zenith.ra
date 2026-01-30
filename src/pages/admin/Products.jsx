@@ -565,27 +565,37 @@ export default function AdminProducts() {
                 </div>
 
                 {/* Checkboxes */}
-                <div className="flex items-center gap-6">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="is_featured"
-                      checked={formData.is_featured}
-                      onChange={handleChange}
-                      className="form-checkbox bg-dark-800 border-dark-600 text-primary-500 rounded focus:ring-primary-500"
-                    />
-                    <span className="text-white">Featured Product</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="is_active"
-                      checked={formData.is_active}
-                      onChange={handleChange}
-                      className="form-checkbox bg-dark-800 border-dark-600 text-primary-500 rounded focus:ring-primary-500"
-                    />
-                    <span className="text-white">Active</span>
-                  </label>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-6">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="is_featured"
+                        checked={formData.is_featured}
+                        onChange={handleChange}
+                        className="form-checkbox bg-dark-800 border-dark-600 text-primary-500 rounded focus:ring-primary-500"
+                      />
+                      <span className="text-white">Featured Product (Showcase)</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="is_active"
+                        checked={formData.is_active}
+                        onChange={handleChange}
+                        className="form-checkbox bg-dark-800 border-dark-600 text-primary-500 rounded focus:ring-primary-500"
+                      />
+                      <span className="text-white">Active</span>
+                    </label>
+                  </div>
+                  <div className="bg-primary-500/10 border border-primary-500/20 rounded-lg p-3">
+                    <p className="text-primary-500 text-sm flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span><strong>Featured products</strong> akan muncul di halaman Showcase Eksklusif (tanpa harga, hanya untuk promosi)</span>
+                    </p>
+                  </div>
                 </div>
 
                 {/* Submit */}

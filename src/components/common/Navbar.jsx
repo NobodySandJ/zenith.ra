@@ -42,6 +42,7 @@ export default function Navbar() {
   const navLinks = [
     { path: '/', label: t('nav.home') },
     { path: '/products', label: t('nav.products') },
+    { path: '/showcase', label: t('nav.showcase') },
     { path: '/about', label: t('nav.about') },
     { path: '/contact', label: t('nav.contact') },
     { path: '/faq', label: t('nav.faq') },

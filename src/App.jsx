@@ -18,6 +18,7 @@ import LoadingScreen from '@components/common/LoadingScreen'
 // Lazy loaded pages (code splitting)
 const Products = lazy(() => import('@pages/public/Products'))
 const ProductDetail = lazy(() => import('@pages/public/ProductDetail'))
+const Showcase = lazy(() => import('@pages/public/Showcase'))
 const About = lazy(() => import('@pages/public/About'))
 const Contact = lazy(() => import('@pages/public/Contact'))
 const FAQ = lazy(() => import('@pages/public/FAQ'))
@@ -95,6 +96,16 @@ function App() {
                 <Route path="products/:slug" element={
                   <Suspense fallback={<LoadingScreen />}>
                     <ProductDetail />
+                  </Suspense>
+                } />
+                <Route path="showcase" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <Showcase />
+                  </Suspense>
+                } />
+                <Route path="showcase" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <Showcase />
                   </Suspense>
                 } />
                 <Route path="about" element={
