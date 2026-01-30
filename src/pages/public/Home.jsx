@@ -43,6 +43,7 @@ const dummyProducts = [
     short_description_id: 'Kaos oversized futuristik dengan desain gelombang pulse reflektif',
     price: 350000,
     is_bestseller: true,
+    is_featured: true,
     quantity: 150,
     images: [{ image_url: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500', is_primary: true }]
   },
@@ -266,7 +267,7 @@ export default function Home() {
                       </div>
 
                       {/* Image */}
-                      <div className="relative aspect-[4/5] overflow-hidden bg-dark-900">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-dark-900">
                         <img
                           src={product.images[0]?.image_url}
                           alt={lang === 'id' ? product.name_id : product.name_en}
@@ -278,8 +279,8 @@ export default function Home() {
                         
                         {/* View Icon */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <div className="w-16 h-16 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center">
-                            <svg className="w-8 h-8 text-dark-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="w-12 h-12 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center">
+                            <svg className="w-6 h-6 text-dark-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
@@ -288,18 +289,18 @@ export default function Home() {
                       </div>
 
                       {/* Content */}
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                      <div className="p-4">
+                        <h3 className="text-lg font-bold text-white mb-1.5 group-hover:text-primary transition-colors line-clamp-1">
                           {lang === 'id' ? product.name_id : product.name_en}
                         </h3>
                         
-                        <p className="text-white/60 text-sm mb-4 line-clamp-2">
+                        <p className="text-white/60 text-xs mb-3 line-clamp-2">
                           {lang === 'id' ? product.short_description_id : product.short_description_en}
                         </p>
 
                         {/* Display Only Badge */}
-                        <div className="flex items-center gap-2 text-primary/80 text-sm">
-                          <HiOutlineSparkles className="text-lg" />
+                        <div className="flex items-center gap-1.5 text-primary/80 text-xs">
+                          <HiOutlineSparkles className="text-base" />
                           <span className="font-medium">
                             {lang === 'id' ? 'Display Eksklusif' : 'Exclusive Display'}
                           </span>
