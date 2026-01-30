@@ -114,10 +114,10 @@ export default function AdminLayout() {
   )
 
   return (
-    <div className="min-h-screen bg-dark-950 flex">
+    <div className="min-h-screen bg-dark-950">
       {/* Desktop Sidebar */}
       <aside 
-        className={`hidden lg:flex flex-col bg-dark-900 border-r border-dark-700 transition-all duration-300 ${
+        className={`hidden lg:flex flex-col bg-dark-900 border-r border-dark-700 transition-all duration-300 fixed top-0 left-0 h-screen z-40 ${
           sidebarOpen ? 'w-64' : 'w-20'
         }`}
       >
@@ -149,7 +149,7 @@ export default function AdminLayout() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
         {/* Top Bar */}
         <header className="h-16 bg-dark-900/80 backdrop-blur-lg border-b border-dark-700 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
           <div className="flex items-center space-x-4">

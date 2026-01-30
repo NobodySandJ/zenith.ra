@@ -59,18 +59,20 @@ export default function AdminLogin() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-white font-medium mb-2 text-sm">
                 {t('auth.email')}
               </label>
               <div className="relative">
-                <HiOutlineMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <HiOutlineMail className="w-5 h-5 text-gray-500" />
+                </div>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="admin@zenith-ra.com"
-                  className="input-dark pl-12"
+                  className="w-full bg-dark-900 border border-dark-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-primary-500 transition-all duration-300 h-12 pl-12 pr-4"
                   required
                 />
               </div>
@@ -78,24 +80,26 @@ export default function AdminLogin() {
 
             {/* Password */}
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-white font-medium mb-2 text-sm">
                 {t('auth.password')}
               </label>
               <div className="relative">
-                <HiOutlineLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <HiOutlineLockClosed className="w-5 h-5 text-gray-500" />
+                </div>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="input-dark pl-12 pr-12"
+                  className="w-full bg-dark-900 border border-dark-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-primary-500 transition-all duration-300 h-12 pl-12 pr-12"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors p-1"
                 >
                   {showPassword ? (
                     <HiOutlineEyeOff className="w-5 h-5" />
@@ -124,10 +128,18 @@ export default function AdminLogin() {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-dark-800 rounded-lg">
-            <p className="text-gray-500 text-sm mb-2">Demo Credentials:</p>
-            <p className="text-gray-400 text-sm">Email: <span className="text-primary-500">zenith@ra.com</span></p>
-            <p className="text-gray-400 text-sm">Password: <span className="text-primary-500">jayajayajaya</span></p>
+          <div className="mt-6 p-4 bg-dark-800/50 rounded-lg border border-dark-700">
+            <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Demo Credentials</p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500 text-sm">Email:</span>
+                <span className="text-primary-500 text-sm font-mono">zenith@ra.com</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500 text-sm">Password:</span>
+                <span className="text-primary-500 text-sm font-mono">jayajayajaya</span>
+              </div>
+            </div>
           </div>
         </div>
 
