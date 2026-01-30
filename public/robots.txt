@@ -1,0 +1,13 @@
+# Zenith.ra Robots.txt
+# https://zenith-ra.com
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://zenith-ra.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1

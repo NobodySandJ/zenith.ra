@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import AOS from 'aos'
@@ -10,29 +10,31 @@ import { CartProvider } from '@context/CartContext'
 
 // Layouts
 import PublicLayout from '@layouts/PublicLayout'
-import AdminLayout from '@layouts/AdminLayout'
 
-// Public Pages
+// Eagerly loaded pages (critical path)
 import Home from '@pages/public/Home'
-import Products from '@pages/public/Products'
-import ProductDetail from '@pages/public/ProductDetail'
-import About from '@pages/public/About'
-import Contact from '@pages/public/Contact'
-import FAQ from '@pages/public/FAQ'
-import Cart from '@pages/public/Cart'
+import LoadingScreen from '@components/common/LoadingScreen'
 
-// Admin Pages
-import AdminLogin from '@pages/admin/Login'
-import AdminDashboard from '@pages/admin/Dashboard'
-import AdminProducts from '@pages/admin/Products'
-import AdminCategories from '@pages/admin/Categories'
-import AdminBanners from '@pages/admin/Banners'
-import AdminSettings from '@pages/admin/Settings'
-import AdminPages from '@pages/admin/Pages'
+// Lazy loaded pages (code splitting)
+const Products = lazy(() => import('@pages/public/Products'))
+const ProductDetail = lazy(() => import('@pages/public/ProductDetail'))
+const About = lazy(() => import('@pages/public/About'))
+const Contact = lazy(() => import('@pages/public/Contact'))
+const FAQ = lazy(() => import('@pages/public/FAQ'))
+const Cart = lazy(() => import('@pages/public/Cart'))
+
+// Admin pages (lazy loaded)
+const AdminLogin = lazy(() => import('@pages/admin/Login'))
+const AdminLayout = lazy(() => import('@layouts/AdminLayout'))
+const AdminDashboard = lazy(() => import('@pages/admin/Dashboard'))
+const AdminProducts = lazy(() => import('@pages/admin/Products'))
+const AdminCategories = lazy(() => import('@pages/admin/Categories'))
+const AdminBanners = lazy(() => import('@pages/admin/Banners'))
+const AdminSettings = lazy(() => import('@pages/admin/Settings'))
+const AdminPages = lazy(() => import('@pages/admin/Pages'))
 
 // Components
-import ProtectedRoute from '@components/auth/ProtectedRoute'
-import LoadingScreen from '@components/common/LoadingScreen'
+const ProtectedRoute = lazy(() => import('@components/auth/ProtectedRoute'))
 
 function App() {
   useEffect(() => {
@@ -85,30 +87,84 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<PublicLayout />}>
                 <Route index element={<Home />} />
-                <Route path="products" element={<Products />} />
-                <Route path="products/:slug" element={<ProductDetail />} />
-                <Route path="about" element={<About />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="faq" element={<FAQ />} />
-                <Route path="cart" element={<Cart />} />
+                <Route path="products" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <Products />
+                  </Suspense>
+                } />
+                <Route path="products/:slug" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <ProductDetail />
+                  </Suspense>
+                } />
+                <Route path="about" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <About />
+                  </Suspense>
+                } />
+                <Route path="contact" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <Contact />
+                  </Suspense>
+                } />
+                <Route path="faq" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <FAQ />
+                  </Suspense>
+                } />
+                <Route path="cart" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <Cart />
+                  </Suspense>
+                } />
               </Route>
 
               {/* Admin Routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/login" element={
+                <Suspense fallback={<LoadingScreen />}>
+                  <AdminLogin />
+                </Suspense>
+              } />
               <Route
                 path="/admin"
                 element={
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
+                  <Suspense fallback={<LoadingScreen />}>
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  </Suspense>
                 }
               >
-                <Route index element={<AdminDashboard />} />
-                <Route path="products" element={<AdminProducts />} />
-                <Route path="categories" element={<AdminCategories />} />
-                <Route path="banners" element={<AdminBanners />} />
-                <Route path="pages" element={<AdminPages />} />
-                <Route path="settings" element={<AdminSettings />} />
+                <Route index element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <AdminDashboard />
+                  </Suspense>
+                } />
+                <Route path="products" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <AdminProducts />
+                  </Suspense>
+                } />
+                <Route path="categories" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <AdminCategories />
+                  </Suspense>
+                } />
+                <Route path="banners" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <AdminBanners />
+                  </Suspense>
+                } />
+                <Route path="pages" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <AdminPages />
+                  </Suspense>
+                } />
+                <Route path="settings" element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <AdminSettings />
+                  </Suspense>
+                } />
               </Route>
             </Routes>
           </Router>

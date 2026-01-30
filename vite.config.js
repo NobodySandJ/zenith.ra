@@ -19,4 +19,55 @@ export default defineConfig({
       '@context': path.resolve(__dirname, './src/context'),
     },
   },
+  // Build optimizations
+  build: {
+    // Enable minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    // Code splitting
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['framer-motion', 'react-hot-toast', 'react-icons'],
+          'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
+          'vendor-charts': ['chart.js', 'react-chartjs-2'],
+          'vendor-i18n': ['i18next', 'react-i18next'],
+        },
+      },
+    },
+    // Chunk size warning limit
+    chunkSizeWarningLimit: 1000,
+    // Enable source maps for production debugging (optional)
+    sourcemap: false,
+    // Target modern browsers
+    target: 'es2020',
+  },
+  // Optimize dependencies
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'framer-motion',
+      'react-hot-toast',
+      'i18next',
+      'react-i18next',
+    ],
+  },
+  // Server configuration
+  server: {
+    port: 3000,
+    open: true,
+  },
+  // Preview configuration
+  preview: {
+    port: 4173,
+  },
 })

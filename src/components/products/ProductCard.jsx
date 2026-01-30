@@ -1,10 +1,12 @@
+import { memo, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { HiOutlineShoppingBag, HiOutlineEye } from 'react-icons/hi'
 import { useCart } from '@context/CartContext'
+import OptimizedImage, { getOptimizedUrl } from '@components/common/OptimizedImage'
 
-export default function ProductCard({ product, index = 0 }) {
+function ProductCard({ product, index = 0 }) {
   const { t, i18n } = useTranslation()
   const { addItem } = useCart()
   const lang = i18n.language
@@ -12,17 +14,20 @@ export default function ProductCard({ product, index = 0 }) {
   const name = lang === 'id' ? product.name_id : product.name_en
   const shortDesc = lang === 'id' ? product.short_description_id : product.short_description_en
   
-  const primaryImage = product.images?.find(img => img.is_primary)?.image_url 
-    || product.images?.[0]?.image_url 
-    || '/images/placeholder.jpg'
+  const primaryImage = useMemo(() => {
+    const imgUrl = product.images?.find(img => img.is_primary)?.image_url 
+      || product.images?.[0]?.image_url 
+      || '/images/placeholder.jpg'
+    return getOptimizedUrl(imgUrl, { width: 500, quality: 80 })
+  }, [product.images])
 
-  const formatPrice = (price) => {
+  const formatPrice = useMemo(() => (price) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
       minimumFractionDigits: 0,
     }).format(price)
-  }
+  }, [])
 
   const handleQuickAdd = (e) => {
     e.preventDefault()
@@ -34,22 +39,22 @@ export default function ProductCard({ product, index = 0 }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: Math.min(index * 0.1, 0.3) }}
+      viewport={{ once: true, margin: '-50px' }}
       className="group"
     >
       <Link to={`/products/${product.slug}`} className="block">
         <div className="card-dark overflow-hidden">
           {/* Image Container */}
           <div className="relative aspect-square overflow-hidden bg-dark-900">
-            <img
+            <OptimizedImage
               src={primaryImage}
               alt={name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              className="w-full h-full transition-transform duration-500 group-hover:scale-110"
             />
             
             {/* Badges */}
-            <div className="absolute top-4 left-4 flex flex-col gap-2">
+            <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
               {product.is_new && (
                 <span className="px-3 py-1 bg-primary-500 text-black text-xs font-bold uppercase rounded">
                   {t('home.newArrivals').split(' ')[0]}
@@ -134,3 +139,6 @@ export default function ProductCard({ product, index = 0 }) {
     </motion.div>
   )
 }
+
+// Memoize to prevent unnecessary re-renders
+export default memo(ProductCard)
