@@ -124,9 +124,9 @@ export default function AdminDashboard() {
       },
       tooltip: {
         backgroundColor: '#1a1a1a',
-        titleColor: '#39ff14',
+        titleColor: '#ffd700',
         bodyColor: '#fff',
-        borderColor: '#39ff14',
+        borderColor: '#d4af37',
         borderWidth: 1,
         padding: 12,
         displayColors: false
@@ -159,12 +159,12 @@ export default function AdminDashboard() {
       {
         label: 'Sales',
         data: chartData.salesData || [],
-        borderColor: '#39ff14',
-        backgroundColor: 'rgba(57, 255, 20, 0.1)',
+        borderColor: '#ffd700',
+        backgroundColor: 'rgba(255, 215, 0, 0.1)',
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: '#39ff14',
-        pointBorderColor: '#39ff14',
+        pointBackgroundColor: '#ffd700',
+        pointBorderColor: '#d4af37',
         pointHoverRadius: 8,
         pointRadius: 4
       }
@@ -178,11 +178,11 @@ export default function AdminDashboard() {
       {
         label: 'Orders',
         data: chartData.ordersData || [],
-        backgroundColor: 'rgba(57, 255, 20, 0.7)',
-        borderColor: '#39ff14',
+        backgroundColor: 'rgba(192, 192, 192, 0.7)',
+        borderColor: '#c0c0c0',
         borderWidth: 1,
         borderRadius: 4,
-        hoverBackgroundColor: '#39ff14'
+        hoverBackgroundColor: '#e8e8e8'
       }
     ]
   }
@@ -194,10 +194,10 @@ export default function AdminDashboard() {
       {
         data: [45, 25, 15, 15],
         backgroundColor: [
+          '#ffd700',
+          '#c0c0c0',
           '#39ff14',
-          '#00d4ff',
-          '#ff6b6b',
-          '#ffd93d'
+          '#d4af37'
         ],
         borderColor: '#0a0a0a',
         borderWidth: 2,
@@ -221,11 +221,11 @@ export default function AdminDashboard() {
     }
   }
 
-  const StatCard = ({ icon: Icon, label, value, trend, trendValue, color = 'primary' }) => (
+  const StatCard = ({ icon: Icon, label, value, trend, trendValue, color = 'gold' }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card-dark p-6 group hover:border-primary-500/30 transition-all"
+      className="card-dark p-6 group hover:border-gold-500/30 hover:shadow-[0_0_20px_rgba(255,215,0,0.1)] transition-all"
     >
       <div className="flex items-start justify-between">
         <div>
@@ -238,8 +238,8 @@ export default function AdminDashboard() {
             </p>
           )}
         </div>
-        <div className={`p-3 rounded-lg bg-${color}-500/10 group-hover:bg-${color}-500/20 transition-colors`}>
-          <Icon className={`w-6 h-6 text-${color}-500`} />
+        <div className={`p-3 rounded-lg bg-gradient-to-br from-gold-900/20 to-silver-900/10 border border-gold-500/20 group-hover:border-gold-500/40 transition-colors`}>
+          <Icon className={`w-6 h-6 text-gold-400`} />
         </div>
       </div>
     </motion.div>
@@ -262,7 +262,7 @@ export default function AdminDashboard() {
               onClick={() => setPeriod(p)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 period === p
-                  ? 'bg-primary-500 text-dark-950'
+                  ? 'bg-gradient-to-r from-gold-metallic to-gold-doom text-dark-950 shadow-[0_0_15px_rgba(255,215,0,0.3)]'
                   : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -388,13 +388,13 @@ export default function AdminDashboard() {
                           alt={product.name}
                           className="w-10 h-10 rounded-lg object-cover"
                         />
-                        <span className="text-white group-hover:text-primary-500 transition-colors">
+                        <span className="text-white group-hover:text-gold-400 transition-colors">
                           {product.name}
                         </span>
                       </div>
                     </td>
                     <td className="text-right text-gray-400">{product.sales}</td>
-                    <td className="text-right text-primary-500 font-medium">
+                    <td className="text-right text-gold-400 font-medium">
                       ${product.revenue.toLocaleString()}
                     </td>
                   </tr>
@@ -441,9 +441,9 @@ export default function AdminDashboard() {
           ].map((activity, index) => (
             <div key={index} className="flex items-center gap-4 p-3 rounded-lg hover:bg-dark-800/50 transition-colors">
               <div className={`w-2 h-2 rounded-full ${
-                activity.type === 'order' ? 'bg-primary-500' :
+                activity.type === 'order' ? 'bg-gold-metallic shadow-[0_0_8px_rgba(255,215,0,0.6)]' :
                 activity.type === 'alert' ? 'bg-yellow-500' :
-                activity.type === 'review' ? 'bg-blue-500' :
+                activity.type === 'review' ? 'bg-silver-metallic' :
                 'bg-gray-500'
               }`} />
               <div className="flex-1">

@@ -77,7 +77,7 @@ export default function AdminLayout() {
             to={item.path}
             className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               isActive(item.path, item.exact)
-                ? 'bg-primary-500/20 text-primary-500 border-l-2 border-primary-500'
+                ? 'bg-gradient-to-r from-gold-900/30 to-silver-900/20 text-gold-400 border-l-2 border-gold-500 shadow-[0_0_15px_rgba(255,215,0,0.1)]'
                 : 'text-gray-400 hover:text-white hover:bg-dark-700'
             }`}
           >
@@ -90,8 +90,8 @@ export default function AdminLayout() {
       {/* User Section */}
       <div className="p-4 border-t border-dark-700">
         <div className={`flex items-center ${sidebarOpen ? 'space-x-3' : 'justify-center'} mb-4`}>
-          <div className="w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center">
-            <span className="text-primary-500 font-bold">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-silver-metallic/20 to-silver-chrome/10 border border-silver-500/30 flex items-center justify-center">
+            <span className="text-silver-metallic font-bold">
               {user?.name?.charAt(0) || 'A'}
             </span>
           </div>
