@@ -57,13 +57,13 @@ function ProductCard({ product, index = 0 }) {
             <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
               {product.is_featured && (
                 <div className="relative group/badge">
-                  <span className="px-3 py-1 bg-gradient-to-r from-primary-500 to-purple-500 text-black text-xs font-bold uppercase rounded flex items-center gap-1 shadow-lg">
+                  <span className="px-3 py-1 bg-gradient-to-r from-gold-metallic via-silver-metallic to-gold-metallic text-black text-xs font-bold uppercase rounded flex items-center gap-1 shadow-lg animate-gradient bg-[length:200%_auto]">
                     <HiOutlineSparkles className="w-3 h-3" />
                     {lang === 'id' ? 'Display Eksklusif' : 'Display Only'}
                   </span>
                   {/* Tooltip */}
                   {product.showcase_badge && (
-                    <div className="absolute left-0 top-full mt-2 w-56 p-3 bg-dark-800 border border-primary-500/30 rounded-lg shadow-xl opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-300 z-20">
+                    <div className="absolute left-0 top-full mt-2 w-56 p-3 bg-dark-800 border border-gold-500/30 rounded-lg shadow-xl opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-300 z-20">
                       <p className="text-xs text-gray-300 leading-relaxed">
                         {lang === 'id' ? product.showcase_badge.text_id : product.showcase_badge.text_en}
                       </p>
@@ -146,8 +146,8 @@ function ProductCard({ product, index = 0 }) {
 
             <div className="flex items-center justify-between">
               {product.is_featured ? (
-                <div className="flex items-center gap-2 text-gray-400">
-                  <HiOutlineSparkles className="w-4 h-4 text-primary-500" />
+                <div className="flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-silver-metallic via-gold-metallic to-silver-metallic">
+                  <HiOutlineSparkles className="w-4 h-4 text-gold-metallic drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]" />
                   <span className="text-sm font-medium">
                     {lang === 'id' ? 'Display Eksklusif - Tidak Dijual' : 'Display Only - Not for Sale'}
                   </span>

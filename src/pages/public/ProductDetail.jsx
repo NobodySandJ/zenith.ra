@@ -222,7 +222,7 @@ export default function ProductDetail() {
               {/* Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
                 {product.is_featured && (
-                  <span className="px-4 py-2 bg-gradient-to-r from-primary-500 to-purple-500 text-black text-sm font-bold uppercase rounded flex items-center gap-1.5">
+                  <span className="px-4 py-2 bg-gradient-to-r from-gold-metallic via-silver-metallic to-gold-metallic text-black text-sm font-bold uppercase rounded flex items-center gap-1.5 shadow-lg animate-gradient bg-[length:200%_auto]">
                     <HiOutlineSparkles className="w-4 h-4" />
                     {lang === 'id' ? 'Display Eksklusif' : 'Display Only'}
                   </span>
@@ -279,18 +279,21 @@ export default function ProductDetail() {
 
             {/* Price & Stock */}
             {product.is_featured ? (
-              <div className="mb-6 p-6 bg-gradient-to-r from-primary-500/10 to-purple-500/10 border border-primary-500/30 rounded-xl">
-                <div className="flex items-center gap-3 mb-2">
-                  <HiOutlineSparkles className="w-6 h-6 text-primary-500" />
-                  <h3 className="text-xl font-bold text-white">
-                    {lang === 'id' ? 'Produk Display Eksklusif' : 'Exclusive Display Product'}
-                  </h3>
+              <div className="mb-6 p-6 bg-gradient-to-br from-gold-900/20 via-silver-900/20 to-gold-900/20 border-2 border-transparent rounded-xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-gold-500/20 via-silver-500/20 to-gold-500/20 animate-gradient bg-[length:200%_auto]"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-2">
+                    <HiOutlineSparkles className="w-6 h-6 text-gold-metallic drop-shadow-[0_0_10px_rgba(255,215,0,0.6)]" />
+                    <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-silver-chrome via-gold-metallic to-silver-chrome">
+                      {lang === 'id' ? 'Produk Display Eksklusif' : 'Exclusive Display Product'}
+                    </h3>
+                  </div>
+                  <p className="text-gray-300">
+                    {lang === 'id' 
+                      ? 'Produk ini ditampilkan untuk tujuan promosi dan tidak tersedia untuk pembelian regular.'
+                      : 'This product is displayed for promotional purposes and is not available for regular purchase.'}
+                  </p>
                 </div>
-                <p className="text-gray-400">
-                  {lang === 'id' 
-                    ? 'Produk ini ditampilkan untuk tujuan promosi dan tidak tersedia untuk pembelian regular.'
-                    : 'This product is displayed for promotional purposes and is not available for regular purchase.'}
-                </p>
               </div>
             ) : (
               <div className="flex items-center justify-between mb-6">
@@ -330,40 +333,43 @@ export default function ProductDetail() {
 
             {/* Showcase Highlight - Only for featured products */}
             {product.is_featured && product.showcase_highlight_en && (
-              <div className="mb-8 p-6 bg-gradient-to-br from-primary-500/5 via-purple-500/5 to-pink-500/5 border border-primary-500/20 rounded-2xl backdrop-blur-sm" data-aos="fade-up">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-1 h-8 bg-gradient-to-b from-primary-500 to-purple-500 rounded-full"></div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white">
-                      {lang === 'id' ? product.showcase_highlight_id.title : product.showcase_highlight_en.title}
-                    </h3>
-                    <p className="text-sm text-primary-400 font-medium">
-                      {lang === 'id' ? product.showcase_highlight_id.subtitle : product.showcase_highlight_en.subtitle}
-                    </p>
+              <div className="mb-8 p-6 bg-gradient-to-br from-gold-900/10 via-dark-800 to-silver-900/10 border-2 border-transparent rounded-2xl backdrop-blur-sm relative overflow-hidden" data-aos="fade-up">
+                <div className="absolute inset-0 bg-gradient-to-r from-gold-500/10 via-silver-500/10 to-gold-500/10 animate-gradient bg-[length:200%_auto]"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-8 bg-gradient-to-b from-gold-metallic to-silver-metallic rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)]"></div>
+                    <div>
+                      <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-metallic via-silver-chrome to-gold-metallic">
+                        {lang === 'id' ? product.showcase_highlight_id.title : product.showcase_highlight_en.title}
+                      </h3>
+                      <p className="text-sm text-gold-400 font-medium">
+                        {lang === 'id' ? product.showcase_highlight_id.subtitle : product.showcase_highlight_en.subtitle}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  {lang === 'id' ? product.showcase_highlight_id.description : product.showcase_highlight_en.description}
-                </p>
+                  
+                  <p className="text-gray-300 mb-6 leading-relaxed">
+                    {lang === 'id' ? product.showcase_highlight_id.description : product.showcase_highlight_en.description}
+                  </p>
 
-                {/* Features Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {(lang === 'id' ? product.showcase_highlight_id.features : product.showcase_highlight_en.features).map((feature, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-start gap-3 p-4 bg-dark-800/50 rounded-xl border border-dark-700/50 hover:border-primary-500/30 transition-colors"
-                    >
-                      <span className="text-2xl">{feature.icon}</span>
-                      <div className="flex-1">
-                        <h4 className="text-white font-semibold mb-1 text-sm">{feature.title}</h4>
-                        <p className="text-gray-500 text-xs leading-relaxed">{feature.description}</p>
-                      </div>
-                    </motion.div>
-                  ))}
+                  {/* Features Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {(lang === 'id' ? product.showcase_highlight_id.features : product.showcase_highlight_en.features).map((feature, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-start gap-3 p-4 bg-dark-800/50 rounded-xl border border-gold-900/30 hover:border-gold-500/50 transition-colors"
+                      >
+                        <span className="text-2xl">{feature.icon}</span>
+                        <div className="flex-1">
+                          <h4 className="text-white font-semibold mb-1 text-sm">{feature.title}</h4>
+                          <p className="text-gray-500 text-xs leading-relaxed">{feature.description}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

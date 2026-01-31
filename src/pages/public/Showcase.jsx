@@ -160,7 +160,7 @@ export default function Showcase() {
     <div className="min-h-screen bg-dark-900 pt-20">
       {/* Hero Header */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-gold-900/10 via-silver-900/5 to-transparent"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -169,21 +169,21 @@ export default function Showcase() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-2 mb-6">
-              <HiOutlineSparkles className="text-primary text-xl" />
-              <span className="text-primary font-medium">
+            <div className="inline-flex items-center gap-2 bg-gold-900/20 border border-gold-500/30 rounded-full px-6 py-2 mb-6 shadow-[0_0_15px_rgba(255,215,0,0.1)]">
+              <HiOutlineSparkles className="text-gold-metallic text-xl" />
+              <span className="text-gold-400 font-medium">
                 {i18n.language === 'id' ? 'Showcase Eksklusif' : 'Exclusive Showcase'}
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-black mb-6">
               {i18n.language === 'id' ? (
                 <>
-                  GALERI <span className="text-primary">EKSKLUSIF</span>
+                  GALERI <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-metallic via-silver-chrome to-gold-metallic animate-gradient bg-[length:200%_auto]">EKSKLUSIF</span>
                 </>
               ) : (
                 <>
-                  EXCLUSIVE <span className="text-primary">GALLERY</span>
+                  EXCLUSIVE <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-metallic via-silver-chrome to-gold-metallic animate-gradient bg-[length:200%_auto]">GALLERY</span>
                 </>
               )}
             </h1>
@@ -205,8 +205,8 @@ export default function Showcase() {
         </div>
 
         {/* Decorative elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gold-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-silver-500/5 rounded-full blur-3xl"></div>
       </section>
 
       {/* Showcase Grid */}
@@ -227,10 +227,10 @@ export default function Showcase() {
               >
                 <Link to={`/products/${product.slug}`}>
                   {/* Card Container */}
-                  <div className="relative bg-dark-800/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500">
+                  <div className="relative bg-dark-800/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-gold-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)]">
                     {/* Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <div className="bg-primary/90 backdrop-blur-sm text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full">
+                      <div className="bg-gradient-to-r from-gold-metallic via-silver-metallic to-gold-metallic text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-gradient bg-[length:200%_auto]">
                         {i18n.language === 'id' ? product.badge_id : product.badge_en}
                       </div>
                     </div>
@@ -248,7 +248,7 @@ export default function Showcase() {
                       
                       {/* View Icon */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="w-16 h-16 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gold-metallic to-gold-doom backdrop-blur-sm flex items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.5)]">
                           <HiOutlineEye className="text-dark-900 text-2xl" />
                         </div>
                       </div>
@@ -256,7 +256,7 @@ export default function Showcase() {
 
                     {/* Content */}
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-gold-metallic transition-colors">
                         {i18n.language === 'id' ? product.name_id : product.name_en}
                       </h3>
                       
@@ -266,7 +266,7 @@ export default function Showcase() {
 
                       {/* Highlight/Collaboration Info */}
                       {product.highlight_en && (
-                        <div className="mb-4 p-3 bg-gradient-to-r from-primary-500/10 to-purple-500/10 border border-primary-500/20 rounded-lg">
+                        <div className="mb-4 p-3 bg-gradient-to-r from-gold-900/20 via-silver-900/20 to-gold-900/20 border border-gold-500/30 rounded-lg shadow-[0_0_15px_rgba(255,215,0,0.1)]">
                           <p className="text-xs text-gray-300 leading-relaxed">
                             ✨ {i18n.language === 'id' ? product.highlight_id : product.highlight_en}
                           </p>
@@ -274,7 +274,7 @@ export default function Showcase() {
                       )}
 
                       {/* Not For Sale Badge */}
-                      <div className="flex items-center gap-2 text-primary/80 text-sm">
+                      <div className="flex items-center gap-2 text-gold-400 text-sm">
                         <HiOutlineSparkles className="text-lg" />
                         <span className="font-medium">
                           {i18n.language === 'id' ? 'Display Eksklusif' : 'Exclusive Display'}
@@ -284,7 +284,7 @@ export default function Showcase() {
 
                     {/* Glow Effect */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-gold-900/10 via-silver-900/5 to-transparent"></div>
                     </div>
                   </div>
                 </Link>
