@@ -72,17 +72,17 @@ function ProductCard({ product, index = 0 }) {
                 </div>
               )}
               {product.is_new && !product.is_featured && (
-                <span className="px-3 py-1 bg-primary-500 text-black text-xs font-bold uppercase rounded">
+                <span className="px-3 py-1 bg-gradient-to-r from-silver-metallic to-silver-chrome text-black text-xs font-bold uppercase rounded shadow-lg">
                   {t('home.newArrivals').split(' ')[0]}
                 </span>
               )}
               {product.compare_price && !product.is_featured && (
-                <span className="px-3 py-1 bg-red-500 text-white text-xs font-bold uppercase rounded">
+                <span className="px-3 py-1 bg-red-500 text-white text-xs font-bold uppercase rounded shadow-[0_0_10px_rgba(239,68,68,0.5)]">
                   Sale
                 </span>
               )}
               {product.is_bestseller && !product.is_featured && (
-                <span className="px-3 py-1 bg-yellow-500 text-black text-xs font-bold uppercase rounded">
+                <span className="px-3 py-1 bg-gradient-to-r from-silver-chrome to-silver-metallic text-black text-xs font-bold uppercase rounded shadow-lg">
                   Best
                 </span>
               )}

@@ -30,9 +30,13 @@ const dummyProducts = [
     price: 450000,
     compare_price: 550000,
     is_new: true,
-    is_featured: true,
+    is_featured: true, // This is SHOWCASE product - will not show in Featured Products
     quantity: 100,
-    images: [{ image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500', is_primary: true }]
+    images: [{ image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500', is_primary: true }],
+    showcase_badge: {
+      text_en: '🎨 Limited edition collaboration - Only 500 pieces worldwide',
+      text_id: '🎨 Kolaborasi edisi terbatas - Hanya 500 pieces di seluruh dunia'
+    }
   },
   {
     id: '2',
@@ -43,7 +47,6 @@ const dummyProducts = [
     short_description_id: 'Kaos oversized futuristik dengan desain gelombang pulse reflektif',
     price: 350000,
     is_bestseller: true,
-    is_featured: true,
     quantity: 150,
     images: [{ image_url: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500', is_primary: true }]
   },
@@ -69,9 +72,25 @@ const dummyProducts = [
     price: 420000,
     compare_price: 500000,
     is_new: true,
-    is_featured: true,
+    is_featured: true, // This is SHOWCASE product - will not show in Featured Products
     quantity: 80,
-    images: [{ image_url: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=500', is_primary: true }]
+    images: [{ image_url: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=500', is_primary: true }],
+    showcase_badge: {
+      text_en: '⚡ Revolutionary UV-reactive technology - Event exclusive display',
+      text_id: '⚡ Teknologi UV-reaktif revolusioner - Display eksklusif event'
+    }
+  },
+  {
+    id: '5',
+    name_en: 'Future Vision Tee',
+    name_id: 'Kaos Future Vision',
+    slug: 'future-vision-tee',
+    short_description_en: 'New arrival with holographic-style innovative print',
+    short_description_id: 'Produk baru dengan cetak inovatif bergaya holografik',
+    price: 380000,
+    is_new: true,
+    quantity: 120,
+    images: [{ image_url: 'https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=500', is_primary: true }]
   },
 ]
 
@@ -206,30 +225,30 @@ export default function Home() {
       </section>
 
       {/* Exclusive Showcase Preview Section */}
-      <section className="py-20 lg:py-32 bg-gradient-to-b from-primary/5 via-dark-900 to-dark-900 relative overflow-hidden">
+      <section className="py-20 lg:py-32 bg-gradient-to-b from-gold-900/10 via-dark-900 to-dark-900 relative overflow-hidden">
         {/* Decorative Background */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iIzM5ZmYxNCIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-30"></div>
-        <div className="absolute top-20 right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZDcwMCIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-30"></div>
+        <div className="absolute top-20 right-20 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-72 h-72 bg-silver-500/5 rounded-full blur-3xl"></div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-2 mb-6">
-              <HiOutlineSparkles className="text-primary text-xl animate-pulse" />
-              <span className="text-primary font-medium uppercase tracking-wider text-sm">
+            <div className="inline-flex items-center gap-2 bg-gold-900/20 border border-gold-500/30 rounded-full px-6 py-2 mb-6 shadow-[0_0_15px_rgba(255,215,0,0.1)]">
+              <HiOutlineSparkles className="text-gold-metallic text-xl animate-pulse drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]" />
+              <span className="text-gold-400 font-medium uppercase tracking-wider text-sm">
                 {lang === 'id' ? 'Showcase Eksklusif' : 'Exclusive Showcase'}
               </span>
             </div>
             
-            <h2 className="text-3xl md:text-5xl font-display font-black text-white mb-4">
+            <h2 className="text-3xl md:text-5xl font-display font-black mb-4">
               {lang === 'id' ? (
                 <>
-                  Koleksi <span className="text-primary">Premium</span> Kami
+                  Koleksi <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-metallic via-silver-chrome to-gold-metallic">Premium</span> Kami
                 </>
               ) : (
                 <>
-                  Our <span className="text-primary">Premium</span> Collection
+                  Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-metallic via-silver-chrome to-gold-metallic">Premium</span> Collection
                 </>
               )}
             </h2>
@@ -258,10 +277,10 @@ export default function Home() {
                 >
                   <Link to={`/products/${product.slug}`}>
                     {/* Card Container */}
-                    <div className="relative bg-dark-800/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500">
+                    <div className="relative bg-dark-800/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-gold-500/50 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)] transition-all duration-500">
                       {/* Exclusive Badge */}
                       <div className="absolute top-4 left-4 z-10">
-                        <div className="bg-primary/90 backdrop-blur-sm text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full">
+                        <div className="bg-gradient-to-r from-gold-metallic via-silver-metallic to-gold-metallic text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-gradient bg-[length:200%_auto]">
                           {lang === 'id' ? 'Eksklusif' : 'Exclusive'}
                         </div>
                       </div>
@@ -279,7 +298,7 @@ export default function Home() {
                         
                         {/* View Icon */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <div className="w-12 h-12 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-metallic to-gold-doom backdrop-blur-sm flex items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.5)]">
                             <svg className="w-6 h-6 text-dark-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -290,7 +309,7 @@ export default function Home() {
 
                       {/* Content */}
                       <div className="p-4">
-                        <h3 className="text-lg font-bold text-white mb-1.5 group-hover:text-primary transition-colors line-clamp-1">
+                        <h3 className="text-lg font-bold text-white mb-1.5 group-hover:text-gold-metallic transition-colors line-clamp-1">
                           {lang === 'id' ? product.name_id : product.name_en}
                         </h3>
                         
@@ -299,7 +318,7 @@ export default function Home() {
                         </p>
 
                         {/* Display Only Badge */}
-                        <div className="flex items-center gap-1.5 text-primary/80 text-xs">
+                        <div className="flex items-center gap-1.5 text-gold-400 text-xs">
                           <HiOutlineSparkles className="text-base" />
                           <span className="font-medium">
                             {lang === 'id' ? 'Display Eksklusif' : 'Exclusive Display'}
@@ -309,7 +328,7 @@ export default function Home() {
 
                       {/* Glow Effect */}
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-gold-900/10 via-silver-900/5 to-transparent"></div>
                       </div>
                     </div>
                   </Link>
@@ -322,7 +341,7 @@ export default function Home() {
           <div className="text-center" data-aos="fade-up">
             <Link 
               to="/showcase"
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-dark-900 font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(57,255,20,0.4)]"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-gold-metallic to-gold-doom hover:from-gold-doom hover:to-gold-metallic text-dark-900 font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -340,6 +359,12 @@ export default function Home() {
         <div className="container mx-auto px-4 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
+            <div className="inline-flex items-center gap-2 bg-silver-900/20 border border-silver-500/30 rounded-full px-6 py-2 mb-4">
+              <HiOutlineStar className="text-silver-metallic text-xl" />
+              <span className="text-silver-400 font-medium text-sm">
+                {lang === 'id' ? 'Koleksi Unggulan' : 'Featured Collection'}
+              </span>
+            </div>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
               {t('home.featuredProducts')}
             </h2>
@@ -355,9 +380,12 @@ export default function Home() {
             <ProductGridSkeleton count={4} />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {dummyProducts.map((product, index) => (
-                <ProductCard key={product.id} product={product} index={index} />
-              ))}
+              {dummyProducts
+                .filter(product => !product.is_featured) // Exclude showcase products from featured section
+                .slice(0, 4)
+                .map((product, index) => (
+                  <ProductCard key={product.id} product={product} index={index} />
+                ))}
             </div>
           )}
 
