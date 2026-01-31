@@ -42,7 +42,9 @@ export default function Showcase() {
         image_url: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800',
         is_featured: true,
         badge_en: 'Exclusive',
-        badge_id: 'Eksklusif'
+        badge_id: 'Eksklusif',
+        highlight_en: 'Collaboration with renowned digital artists - Only 300 pieces',
+        highlight_id: 'Kolaborasi dengan seniman digital ternama - Hanya 300 pieces'
       },
       {
         id: 2,
@@ -54,7 +56,9 @@ export default function Showcase() {
         image_url: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800',
         is_featured: true,
         badge_en: 'Coming Soon',
-        badge_id: 'Segera Hadir'
+        badge_id: 'Segera Hadir',
+        highlight_en: 'Official CD Projekt RED collaboration - Pre-launch exclusive',
+        highlight_id: 'Kolaborasi resmi CD Projekt RED - Eksklusif pre-launch'
       },
       {
         id: 3,
@@ -66,7 +70,9 @@ export default function Showcase() {
         image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800',
         is_featured: true,
         badge_en: 'Innovation',
-        badge_id: 'Inovasi'
+        badge_id: 'Inovasi',
+        highlight_en: 'Revolutionary temperature-regulating fabric technology',
+        highlight_id: 'Teknologi kain pengatur suhu yang revolusioner'
       },
       {
         id: 4,
@@ -78,7 +84,9 @@ export default function Showcase() {
         image_url: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=800',
         is_featured: true,
         badge_en: 'Designer Choice',
-        badge_id: 'Pilihan Desainer'
+        badge_id: 'Pilihan Desainer',
+        highlight_en: 'Hand-signed by lead designer - Museum quality piece',
+        highlight_id: 'Ditandatangani desainer utama - Kualitas museum'
       },
       {
         id: 5,
@@ -90,7 +98,9 @@ export default function Showcase() {
         image_url: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
         is_featured: true,
         badge_en: 'New Tech',
-        badge_id: 'Teknologi Baru'
+        badge_id: 'Teknologi Baru',
+        highlight_en: 'First-ever holographic streetwear - Patent pending',
+        highlight_id: 'Streetwear holografik pertama - Patent pending'
       },
       {
         id: 6,
@@ -102,7 +112,9 @@ export default function Showcase() {
         image_url: 'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=800',
         is_featured: true,
         badge_en: 'Limited',
-        badge_id: 'Terbatas'
+        badge_id: 'Terbatas',
+        highlight_en: '12-hour glow technology - Night event exclusive',
+        highlight_id: 'Teknologi glow 12 jam - Eksklusif event malam'
       }
     ]
 
@@ -248,9 +260,18 @@ export default function Showcase() {
                         {i18n.language === 'id' ? product.name_id : product.name_en}
                       </h3>
                       
-                      <p className="text-white/60 text-sm mb-4 line-clamp-2">
+                      <p className="text-white/60 text-sm mb-3 line-clamp-2">
                         {i18n.language === 'id' ? product.short_description_id : product.short_description_en}
                       </p>
+
+                      {/* Highlight/Collaboration Info */}
+                      {product.highlight_en && (
+                        <div className="mb-4 p-3 bg-gradient-to-r from-primary-500/10 to-purple-500/10 border border-primary-500/20 rounded-lg">
+                          <p className="text-xs text-gray-300 leading-relaxed">
+                            ✨ {i18n.language === 'id' ? product.highlight_id : product.highlight_en}
+                          </p>
+                        </div>
+                      )}
 
                       {/* Not For Sale Badge */}
                       <div className="flex items-center gap-2 text-primary/80 text-sm">

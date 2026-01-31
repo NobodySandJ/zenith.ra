@@ -7,13 +7,15 @@ import {
   HiOutlinePencil,
   HiOutlineTrash,
   HiOutlineX,
-  HiOutlineCollection
+  HiOutlineCollection,
+  HiOutlineSearch
 } from 'react-icons/hi'
 
 export default function AdminCategories() {
   const { t } = useTranslation()
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingCategory, setEditingCategory] = useState(null)
   const [formData, setFormData] = useState({
@@ -170,6 +172,13 @@ export default function AdminCategories() {
     toast.success(t('admin.categories.statusUpdated'))
   }
 
+  // Filter categories by search
+  const filteredCategories = categories.filter(cat =>
+    cat.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    cat.name_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    cat.description_en.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -195,9 +204,23 @@ export default function AdminCategories() {
         </button>
       </div>
 
+      {/* Search */}
+      <div className="card-dark p-4">
+        <div className="relative">
+          <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search categories..."
+            className="input-dark pl-12 w-full"
+          />
+        </div>
+      </div>
+
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map((category) => (
+        {filteredCategories.map((category) => (
           <motion.div
             key={category.id}
             initial={{ opacity: 0, y: 20 }}

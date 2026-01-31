@@ -102,10 +102,11 @@ export default function Navbar() {
             {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center space-x-1 px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+              className="flex items-center space-x-1 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 min-h-[44px]"
               title={i18n.language === 'en' ? 'Switch to Indonesian' : 'Switch to English'}
+              aria-label="Toggle language"
             >
-              <HiOutlineGlobeAlt className="w-5 h-5" />
+              <HiOutlineGlobeAlt className="w-6 h-6" />
               <span className="text-sm font-medium uppercase">
                 {i18n.language === 'en' ? 'ID' : 'EN'}
               </span>
@@ -114,14 +115,15 @@ export default function Navbar() {
             {/* Cart Button */}
             <button
               onClick={() => setCartOpen(true)}
-              className="relative p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+              className="relative p-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Shopping cart"
             >
-              <HiOutlineShoppingBag className="w-6 h-6" />
+              <HiOutlineShoppingBag className="w-7 h-7" />
               {getItemCount() > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-primary-500 text-black text-xs font-bold rounded-full flex items-center justify-center"
+                  className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-primary-500 text-black text-xs font-bold rounded-full flex items-center justify-center"
                   style={{ boxShadow: '0 0 10px var(--color-neon-glow)' }}
                 >
                   {getItemCount()}
@@ -132,12 +134,13 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+              className="lg:hidden p-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Toggle menu"
             >
               {isOpen ? (
-                <HiOutlineX className="w-6 h-6" />
+                <HiOutlineX className="w-7 h-7" />
               ) : (
-                <HiOutlineMenu className="w-6 h-6" />
+                <HiOutlineMenu className="w-7 h-7" />
               )}
             </button>
           </div>
@@ -154,7 +157,7 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="lg:hidden bg-dark-900/95 backdrop-blur-lg border-t border-dark-700"
           >
-            <div className="container mx-auto px-4 py-6 space-y-4">
+            <div className="container mx-auto px-4 py-6 space-y-2">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.path}
@@ -164,7 +167,7 @@ export default function Navbar() {
                 >
                   <Link
                     to={link.path}
-                    className={`block py-3 px-4 rounded-lg font-medium text-sm uppercase tracking-wider transition-all duration-300 ${
+                    className={`block py-4 px-4 rounded-lg font-medium text-base uppercase tracking-wider transition-all duration-300 min-h-[44px] flex items-center ${
                       isActive(link.path)
                         ? 'text-neon bg-white/5 border-l-2 border-primary-500'
                         : 'text-gray-300 hover:text-white hover:bg-white/5'

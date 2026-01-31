@@ -1,12 +1,18 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { HiOutlinePlus, HiOutlineMinus, HiOutlineTrash, HiOutlineArrowLeft } from 'react-icons/hi'
+import { HiOutlinePlus, HiOutlineMinus, HiOutlineTrash, HiOutlineArrowLeft, HiOutlineTag, HiOutlineTruck } from 'react-icons/hi'
 import { useCart } from '@context/CartContext'
+import Breadcrumbs from '@components/common/Breadcrumbs'
+import toast from 'react-hot-toast'
 
 export default function Cart() {
   const { t, i18n } = useTranslation()
   const { items, removeItem, updateQuantity, getTotal, clearCart } = useCart()
+  const [couponCode, setCouponCode] = useState('')
+  const [discount, setDiscount] = useState(0)
+  const [shippingOption, setShippingOption] = useState('regular')
   const lang = i18n.language
 
   const formatPrice = (price) => {
@@ -17,8 +23,32 @@ export default function Cart() {
     }).format(price)
   }
 
-  const shipping = getTotal() >= 500000 ? 0 : 25000
-  const grandTotal = getTotal() + shipping
+  const shippingOptions = [
+    { id: 'regular', name: lang === 'id' ? 'Regular (3-5 hari)' : 'Regular (3-5 days)', price: 25000 },
+    { id: 'express', name: lang === 'id' ? 'Express (1-2 hari)' : 'Express (1-2 days)', price: 45000 },
+    { id: 'same-day', name: lang === 'id' ? 'Same Day (Hari ini)' : 'Same Day (Today)', price: 75000 }
+  ]
+
+  const applyCoupon = () => {
+    const validCoupons = {
+      'WELCOME10': 0.1,
+      'ZENITH20': 0.2,
+      'VIP30': 0.3
+    }
+    
+    if (validCoupons[couponCode.toUpperCase()]) {
+      const discountPercent = validCoupons[couponCode.toUpperCase()]
+      setDiscount(getTotal() * discountPercent)
+      toast.success(lang === 'id' ? `Kupon berhasil! Diskon ${discountPercent * 100}%` : `Coupon applied! ${discountPercent * 100}% off`)
+    } else if (couponCode) {
+      toast.error(lang === 'id' ? 'Kode kupon tidak valid' : 'Invalid coupon code')
+    }
+  }
+
+  const selectedShipping = shippingOptions.find(opt => opt.id === shippingOption)
+  const shipping = getTotal() >= 500000 ? 0 : (selectedShipping?.price || 25000)
+  const subtotal = getTotal()
+  const grandTotal = subtotal - discount + shipping
 
   if (items.length === 0) {
     return (
@@ -46,6 +76,9 @@ export default function Cart() {
   return (
     <div className="min-h-screen pt-24 pb-20">
       <div className="container mx-auto px-4 lg:px-8">
+        {/* Breadcrumbs */}
+        <Breadcrumbs />
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-8" data-aos="fade-down">
           <h1 className="text-3xl md:text-4xl font-bold text-white">
@@ -155,25 +188,66 @@ export default function Cart() {
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-400">{t('cart.subtotal')}</span>
-                  <span className="text-white font-medium">{formatPrice(getTotal())}</span>
+                  <span className="text-white font-medium">{formatPrice(subtotal)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">{t('cart.shipping')}</span>
-                  <span className="text-white font-medium">
-                    {shipping === 0 ? (
-                      <span className="text-green-500">{t('cart.freeShipping')}</span>
-                    ) : (
-                      formatPrice(shipping)
-                    )}
-                  </span>
-                </div>
-                {shipping > 0 && (
-                  <p className="text-sm text-gray-500">
-                    {lang === 'id'
-                      ? `Gratis ongkir untuk pesanan di atas ${formatPrice(500000)}`
-                      : `Free shipping for orders above ${formatPrice(500000)}`}
-                  </p>
+                
+                {discount > 0 && (
+                  <div className="flex justify-between text-green-500">
+                    <span>{lang === 'id' ? 'Diskon' : 'Discount'}</span>
+                    <span className="font-medium">-{formatPrice(discount)}</span>
+                  </div>
                 )}
+                
+                {/* Shipping Options */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">{t('cart.shipping')}</span>
+                    {shipping === 0 && (
+                      <span className="text-green-500 text-sm font-medium">{t('cart.freeShipping')}</span>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    {shippingOptions.map((option) => (
+                      <label
+                        key={option.id}
+                        className={`flex items-center justify-between p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          shippingOption === option.id
+                            ? 'border-primary-500 bg-primary-500/10'
+                            : 'border-dark-700 hover:border-dark-600'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="radio"
+                            name="shipping"
+                            value={option.id}
+                            checked={shippingOption === option.id}
+                            onChange={() => setShippingOption(option.id)}
+                            className="text-primary-500"
+                          />
+                          <div>
+                            <div className="text-white text-sm font-medium">{option.name}</div>
+                            {getTotal() >= 500000 && (
+                              <div className="text-green-500 text-xs">{lang === 'id' ? 'Gratis!' : 'Free!'}</div>
+                            )}
+                          </div>
+                        </div>
+                        <span className={`text-sm font-medium ${getTotal() >= 500000 ? 'line-through text-gray-500' : 'text-white'}`}>
+                          {formatPrice(option.price)}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  
+                  {shipping > 0 && (
+                    <p className="text-xs text-gray-500 mt-2">
+                      {lang === 'id'
+                        ? `Belanja ${formatPrice(500000 - getTotal())} lagi untuk gratis ongkir!`
+                        : `Shop ${formatPrice(500000 - getTotal())} more for free shipping!`}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="border-t border-dark-700 pt-4 mb-6">
@@ -187,16 +261,36 @@ export default function Cart() {
 
               {/* Coupon */}
               <div className="mb-6">
+                <label className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                  <HiOutlineTag className="w-4 h-4" />
+                  {lang === 'id' ? 'Punya kode kupon?' : 'Have a coupon code?'}
+                </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder={t('cart.couponPlaceholder')}
-                    className="input-dark flex-1"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    placeholder={lang === 'id' ? 'Masukkan kode kupon' : 'Enter coupon code'}
+                    className="input-dark flex-1 uppercase"
                   />
-                  <button className="px-4 py-2 bg-dark-700 text-white rounded-lg hover:bg-dark-600 transition-colors">
-                    {t('cart.applyCoupon').split(' ')[0]}
+                  <button 
+                    onClick={applyCoupon}
+                    className="px-4 py-2 bg-dark-700 text-white rounded-lg hover:bg-primary-500 hover:text-dark-900 transition-colors font-medium"
+                  >
+                    {lang === 'id' ? 'Pakai' : 'Apply'}
                   </button>
                 </div>
+                {discount > 0 && (
+                  <p className="text-xs text-green-500 mt-2 flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    {lang === 'id' ? 'Kupon berhasil diterapkan!' : 'Coupon applied successfully!'}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500 mt-2">
+                  {lang === 'id' ? 'Coba: WELCOME10, ZENITH20, VIP30' : 'Try: WELCOME10, ZENITH20, VIP30'}
+                </p>
               </div>
 
               {/* Checkout Button */}

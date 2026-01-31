@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { HiOutlineSearch, HiOutlineAdjustments, HiOutlineViewGrid, HiOutlineViewList } from 'react-icons/hi'
 import ProductCard from '@components/products/ProductCard'
+import Breadcrumbs from '@components/common/Breadcrumbs'
 import { ProductGridSkeleton, CategorySidebarSkeleton } from '@components/common/Skeleton'
 
 // Dummy data
@@ -20,7 +21,11 @@ const dummyProducts = [
     is_featured: true,
     quantity: 100,
     category_id: 'collab',
-    images: [{ image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500', is_primary: true }]
+    images: [{ image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500', is_primary: true }],
+    showcase_badge: {
+      text_en: '🎨 Official Marvel collaboration - Limited to 500 pieces worldwide',
+      text_id: '🎨 Kolaborasi resmi Marvel - Terbatas 500 pieces di seluruh dunia'
+    }
   },
   {
     id: '2',
@@ -61,7 +66,11 @@ const dummyProducts = [
     is_featured: true,
     quantity: 80,
     category_id: 'premium',
-    images: [{ image_url: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=500', is_primary: true }]
+    images: [{ image_url: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=500', is_primary: true }],
+    showcase_badge: {
+      text_en: '⚡ Revolutionary UV-reactive technology - Event exclusive display',
+      text_id: '⚡ Teknologi UV-reaktif revolusioner - Display eksklusif event'
+    }
   },
   {
     id: '5',
@@ -136,6 +145,9 @@ export default function Products() {
   const [showFilters, setShowFilters] = useState(false)
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState('grid') // grid or list
+  const [priceRange, setPriceRange] = useState([0, 1000000])
+  const [minPrice, setMinPrice] = useState('')
+  const [maxPrice, setMaxPrice] = useState('')
   const lang = i18n.language
 
   // Simulate loading
@@ -165,6 +177,11 @@ export default function Products() {
       )
     }
 
+    // Filter by price range
+    const min = minPrice ? parseInt(minPrice) : 0
+    const max = maxPrice ? parseInt(maxPrice) : Infinity
+    filtered = filtered.filter(p => p.price >= min && p.price <= max)
+
     // Sort
     switch (sortBy) {
       case 'price_asc':
@@ -184,11 +201,14 @@ export default function Products() {
     }
 
     setProducts(filtered)
-  }, [activeCategory, searchQuery, sortBy])
+  }, [activeCategory, searchQuery, sortBy, minPrice, maxPrice])
 
   return (
     <div className="min-h-screen pt-24 pb-20">
       <div className="container mx-auto px-4 lg:px-8">
+        {/* Breadcrumbs */}
+        <Breadcrumbs />
+
         {/* Page Header */}
         <div className="text-center mb-12" data-aos="fade-up">
           <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
@@ -257,24 +277,71 @@ export default function Products() {
             className={`lg:w-64 flex-shrink-0 ${showFilters ? 'block' : 'hidden lg:block'}`}
             data-aos="fade-right"
           >
-            <div className="card-dark p-6 sticky top-24">
-              <h3 className="font-semibold text-white mb-4">
-                {t('products.categories')}
-              </h3>
-              <div className="space-y-2">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
-                    className={`w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${
-                      activeCategory === category.id
-                        ? 'bg-primary-500/20 text-primary-500 border-l-2 border-primary-500'
-                        : 'text-gray-400 hover:text-white hover:bg-dark-700'
-                    }`}
-                  >
-                    {lang === 'id' ? category.name_id : category.name_en}
-                  </button>
-                ))}
+            <div className="card-dark p-6 sticky top-24 space-y-6">
+              {/* Categories */}
+              <div>
+                <h3 className="font-semibold text-white mb-4">
+                  {t('products.categories')}
+                </h3>
+                <div className="space-y-2">
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => setActiveCategory(category.id)}
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${
+                        activeCategory === category.id
+                          ? 'bg-primary-500/20 text-primary-500 border-l-2 border-primary-500'
+                          : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                      }`}
+                    >
+                      {lang === 'id' ? category.name_id : category.name_en}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Range Filter */}
+              <div className="pt-6 border-t border-dark-700">
+                <h3 className="font-semibold text-white mb-4">
+                  {lang === 'id' ? 'Rentang Harga' : 'Price Range'}
+                </h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-gray-500 text-sm mb-1 block">
+                      {lang === 'id' ? 'Harga Minimum' : 'Min Price'}
+                    </label>
+                    <input
+                      type="number"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                      placeholder="0"
+                      className="w-full h-10 px-3 bg-dark-800 border border-dark-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-primary-500 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-500 text-sm mb-1 block">
+                      {lang === 'id' ? 'Harga Maksimum' : 'Max Price'}
+                    </label>
+                    <input
+                      type="number"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                      placeholder="1000000"
+                      className="w-full h-10 px-3 bg-dark-800 border border-dark-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-primary-500 transition-all"
+                    />
+                  </div>
+                  {(minPrice || maxPrice) && (
+                    <button
+                      onClick={() => {
+                        setMinPrice('')
+                        setMaxPrice('')
+                      }}
+                      className="text-primary-500 text-sm hover:underline"
+                    >
+                      {lang === 'id' ? 'Reset Filter' : 'Reset Filter'}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </aside>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import { 
   FaInstagram, 
   FaTwitter, 
@@ -9,7 +10,8 @@ import {
   FaWhatsapp,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaPhone
+  FaPhone,
+  FaArrowUp
 } from 'react-icons/fa'
 import { useTheme } from '@context/ThemeContext'
 
@@ -17,6 +19,24 @@ export default function Footer() {
   const { t } = useTranslation()
   const { settings } = useTheme()
   const currentYear = new Date().getFullYear()
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  // Show/hide scroll to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 
   const quickLinks = [
     { path: '/', label: t('nav.home') },
@@ -40,9 +60,10 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-dark-900 border-t border-dark-800">
-      {/* Main Footer */}
-      <div className="container mx-auto px-4 lg:px-8 py-16">
+    <>
+      <footer className="bg-dark-900 border-t border-dark-800">
+        {/* Main Footer */}
+        <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="lg:col-span-1">
@@ -180,5 +201,24 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+
+    {/* Back to Top Button */}
+    <AnimatePresence>
+      {showScrollTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-primary-500 hover:bg-primary-600 text-dark-900 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_20px_rgba(57,255,20,0.5)]"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          title="Back to top"
+        >
+          <FaArrowUp className="w-5 h-5" />
+        </motion.button>
+      )}
+    </AnimatePresence>
+  </>
   )
 }
